@@ -1,0 +1,6 @@
+#ifndef RESOURCE_RC_INCLUDED
+#define RESOURCE_RC_INCLUDED
+
+GLFW_ICON ICON "data/skull-icon.ico"
+
+#endif // RESOURCE_RC_INCLUDED

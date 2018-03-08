@@ -1,0 +1,4 @@
+# Exclusion fichiers codeblocks
+*.cbp
+*.depend
+*.layout
