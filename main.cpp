@@ -1,5 +1,6 @@
-// ImGui - standalone example application for Glfw + OpenGL 2, using fixed pipeline
-// If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
+// Permet de désactiver ou réactiver le proxy dans les paramètres système d'une machine Windows.
+// Vérifie l'activation en temps réel pour le désactiver immédiatement en cas de réactivation non voulue par la politique système.
+// Un bouton permet de choisir si le proxy doit être actif ou non.
 
 #include <imgui.h>
 #include "imgui_impl_glfw.h"
@@ -23,28 +24,19 @@ int main(int, char**)
         return 1;
     GLFWwindow* window = glfwCreateWindow(180, 40, "Proxy toggle", NULL, NULL);
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(2);
+    glfwSwapInterval(6);
 
     // Setup ImGui binding
     ImGui_ImplGlfw_Init(window, true);
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = NULL;
 
-    // Load Fonts
-    // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
-    //ImGuiIO& io = ImGui::GetIO();
-    //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/Cousine-Regular.ttf", 15.0f);
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyClean.ttf", 13.0f);
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyTiny.ttf", 10.0f);
-    //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
-
+    // Setup interface
     ImVec4 clear_color = ImColor(0.0f, 0.0f, 0.0f);
     bool show_main_window = true;
     bool proxy_on = false;
     int proxy = 0;
-    int i=4;
+    int i=4;    //used to push and pop UI styles
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -52,8 +44,7 @@ int main(int, char**)
         glfwPollEvents();
         ImGui_ImplGlfw_NewFrame();
 
-        // 1. Show a simple window
-        // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
+        // interface drawing
         {   ImGui::SetNextWindowPos(ImVec2(0,0));
             ImGui::SetNextWindowSize(ImVec2(180,40));
             ImGui::Begin("Proxy toggle", &show_main_window,ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings);
@@ -66,13 +57,16 @@ int main(int, char**)
             else ImGui::Text("OFF");
             ImGui::SameLine();
             if (ImGui::Button("  Quit  ")) {ImGui_ImplGlfw_Shutdown();glfwTerminate();return 0;}
+            // query actual proxy status
             proxy = ProxyQuery();
+            // sets proxy on or off according to the UI button
             ProxyOff(proxy_on);
+
             ImGui::PopStyleColor(3);
             ImGui::PopID();
             ImGui::End();
 
-        // Rendering
+        // Window rendering
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
@@ -90,7 +84,7 @@ int main(int, char**)
     return 0;
 }
 
-
+// registry query
 int ProxyQuery () {
 HKEY hKey;
 DWORD buffer;
@@ -107,6 +101,7 @@ unsigned long type=REG_DWORD, size=32;
      }
 }
 
+// setting proxy state according to user setting
 int ProxyOff (bool proxy_on) {
 HKEY hKey;
 LONG result;
