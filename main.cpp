@@ -101,6 +101,7 @@ unsigned long type=REG_DWORD, size=32;
        if (buffer) return 1;
        else return 0;
      }
+     else return 0;
 }
 
 // setting proxy state according to user setting
