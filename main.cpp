@@ -53,7 +53,7 @@ int main(int, char**)
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor::HSV(i/7.0f, 0.7f, 0.7f));
             ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(i/7.0f, 0.8f, 0.8f));
             ImGui::Text("  ");ImGui::SameLine();
-            ImGui::Checkbox("Proxy", &proxy_on);ImGui::SameLine();
+            ImGui::Checkbox("Proxy is", &proxy_on);ImGui::SameLine();
             if (proxy) ImGui::Text("ON ");
             else ImGui::Text("OFF");
             ImGui::SameLine();ImGui::Text("     ");ImGui::SameLine();
