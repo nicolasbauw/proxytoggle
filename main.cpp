@@ -56,7 +56,7 @@ int main(int, char**)
             ImGui::Checkbox("Proxy is", &proxy_on);ImGui::SameLine();
             if (proxy) ImGui::Text("ON ");
             else ImGui::Text("OFF");
-            ImGui::SameLine();ImGui::Text("     ");ImGui::SameLine();
+            ImGui::SameLine();ImGui::Text("   ");ImGui::SameLine();
             if (ImGui::Button("  Quit  ")) {ImGui_ImplGlfw_Shutdown();glfwTerminate();return 0;}
             ImGui::SameLine();ImGui::Text("  ");
             // query actual proxy status
