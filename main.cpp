@@ -22,7 +22,7 @@ int main(int, char**)
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
         return 1;
-    GLFWwindow* window = glfwCreateWindow(180, 40, "Proxy toggle", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(260, 40, "Proxy toggle", NULL, NULL);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(6);
 
@@ -46,17 +46,19 @@ int main(int, char**)
 
         // interface drawing
         {   ImGui::SetNextWindowPos(ImVec2(0,0));
-            ImGui::SetNextWindowSize(ImVec2(180,40));
+            ImGui::SetNextWindowSize(ImVec2(260,40));
             ImGui::Begin("Proxy toggle", &show_main_window,ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings);
             ImGui::PushID(i);
             ImGui::PushStyleColor(ImGuiCol_Button, ImColor::HSV(i/7.0f, 0.6f, 0.6f));
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor::HSV(i/7.0f, 0.7f, 0.7f));
             ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(i/7.0f, 0.8f, 0.8f));
+            ImGui::Text("  ");ImGui::SameLine();
             ImGui::Checkbox("Proxy", &proxy_on);ImGui::SameLine();
             if (proxy) ImGui::Text("ON ");
             else ImGui::Text("OFF");
-            ImGui::SameLine();
+            ImGui::SameLine();ImGui::Text("     ");ImGui::SameLine();
             if (ImGui::Button("  Quit  ")) {ImGui_ImplGlfw_Shutdown();glfwTerminate();return 0;}
+            ImGui::SameLine();ImGui::Text("  ");
             // query actual proxy status
             proxy = ProxyQuery();
             // sets proxy on or off according to the UI button
