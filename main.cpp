@@ -48,22 +48,21 @@ int main(int, char**)
         ImGui::NewFrame();
 
         // interface drawing
-        {   ImGui::SetNextWindowPos(ImVec2(0,0));
-            ImGui::SetNextWindowSize(ImVec2(260,40));
-            ImGui::Begin("Proxy toggle", &show_main_window,ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings);
-            ImGui::Text("  ");ImGui::SameLine();
-            ImGui::Checkbox("Proxy is", &proxy_on);ImGui::SameLine();
-            if (proxy) ImGui::Text("ON ");
-            else ImGui::Text("OFF");
-            ImGui::SameLine();ImGui::Text("   ");ImGui::SameLine();
-            if (ImGui::Button("  Quit  ")) {ImGui_ImplGlfw_Shutdown();glfwTerminate();return 0;}
-            ImGui::SameLine();ImGui::Text("  ");
-            // query actual proxy status
-            proxy = ProxyQuery();
-            // sets proxy on or off according to the UI button
-            ProxyOff(proxy_on);
-
-            ImGui::End();
+        ImGui::SetNextWindowPos(ImVec2(0,0));
+        ImGui::SetNextWindowSize(ImVec2(260,40));
+        ImGui::Begin("Proxy toggle", &show_main_window,ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings);
+        ImGui::Text("  ");ImGui::SameLine();
+        ImGui::Checkbox("Proxy is", &proxy_on);ImGui::SameLine();
+        if (proxy) ImGui::Text("ON ");
+        else ImGui::Text("OFF");
+        ImGui::SameLine();ImGui::Text("   ");ImGui::SameLine();
+        if (ImGui::Button("  Quit  ")) {ImGui_ImplGlfw_Shutdown();glfwTerminate();return 0;}
+        ImGui::SameLine();ImGui::Text("  ");
+        // query actual proxy status
+        proxy = ProxyQuery();
+        // sets proxy on or off according to the UI button
+        ProxyOff(proxy_on);
+        ImGui::End();
 
         // Window rendering
         ImGui::Render();
@@ -74,7 +73,7 @@ int main(int, char**)
 
         glfwMakeContextCurrent(window);
         glfwSwapBuffers(window);
-    }
+    
     }
 
     // Cleanup
