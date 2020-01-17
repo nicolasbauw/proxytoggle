@@ -121,9 +121,7 @@ else dwenable=1;
 	       RegCloseKey(hKey);
 	       return 1;
      }}
-     else {
-	       RegCloseKey(hKey);
-	       return 0;
-     }
+     else RegCloseKey(hKey);
+     return 0;
 }
 
