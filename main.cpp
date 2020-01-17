@@ -1,6 +1,4 @@
-// Permet de d�sactiver ou r�activer le proxy dans les param�tres syst�me d'une machine Windows.
-// V�rifie l'activation en temps r�el pour le d�sactiver imm�diatement en cas de r�activation non voulue par la politique syst�me.
-// Un bouton permet de choisir si le proxy doit �tre actif ou non.
+// A quick and dirty utility to toggle proxy ON or OFF. Checks status every 1/6th frame to fight against eventual proxy set by system policy.
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
