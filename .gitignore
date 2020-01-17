@@ -3,3 +3,6 @@
 *.layout
 bin/
 obj/
+glfw3.dll
+glfw3.lib
+glfw3dll.lib
