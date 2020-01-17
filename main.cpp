@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include <windows.h>
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 int ProxyQuery();
 int ProxyOff(bool proxy_on);
