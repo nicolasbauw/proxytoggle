@@ -1,15 +1,17 @@
-// Permet de désactiver ou réactiver le proxy dans les paramètres système d'une machine Windows.
-// Vérifie l'activation en temps réel pour le désactiver immédiatement en cas de réactivation non voulue par la politique système.
-// Un bouton permet de choisir si le proxy doit être actif ou non.
+// Permet de dï¿½sactiver ou rï¿½activer le proxy dans les paramï¿½tres systï¿½me d'une machine Windows.
+// Vï¿½rifie l'activation en temps rï¿½el pour le dï¿½sactiver immï¿½diatement en cas de rï¿½activation non voulue par la politique systï¿½me.
+// Un bouton permet de choisir si le proxy doit ï¿½tre actif ou non.
 
 #include <imgui.h>
-#include "imgui_impl_glfw.h"
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl2.h>
 #include <stdio.h>
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 #include <windows.h>
 
 int ProxyQuery();
 int ProxyOff(bool proxy_on);
+static int display_w, display_h;
 
 static void error_callback(int error, const char* description)
 {
@@ -26,10 +28,13 @@ int main(int, char**)
     glfwMakeContextCurrent(window);
     glfwSwapInterval(6);
 
-    // Setup ImGui binding
-    ImGui_ImplGlfw_Init(window, true);
+    ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    io.IniFilename = NULL;
+        io.IniFilename = NULL;
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL2_Init();
+
+    ImGuiWindowFlags window_flags = 0;
 
     // Setup interface
     ImVec4 clear_color = ImColor(0.0f, 0.0f, 0.0f);
@@ -42,16 +47,14 @@ int main(int, char**)
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
+        ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
         // interface drawing
         {   ImGui::SetNextWindowPos(ImVec2(0,0));
             ImGui::SetNextWindowSize(ImVec2(260,40));
             ImGui::Begin("Proxy toggle", &show_main_window,ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings);
-            ImGui::PushID(i);
-            ImGui::PushStyleColor(ImGuiCol_Button, ImColor::HSV(i/7.0f, 0.6f, 0.6f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImColor::HSV(i/7.0f, 0.7f, 0.7f));
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(i/7.0f, 0.8f, 0.8f));
             ImGui::Text("  ");ImGui::SameLine();
             ImGui::Checkbox("Proxy is", &proxy_on);ImGui::SameLine();
             if (proxy) ImGui::Text("ON ");
@@ -64,17 +67,16 @@ int main(int, char**)
             // sets proxy on or off according to the UI button
             ProxyOff(proxy_on);
 
-            ImGui::PopStyleColor(3);
-            ImGui::PopID();
             ImGui::End();
 
         // Window rendering
-        int display_w, display_h;
+        ImGui::Render();
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
-        ImGui::Render();
+        ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
+        glfwMakeContextCurrent(window);
         glfwSwapBuffers(window);
     }
     }
@@ -114,7 +116,7 @@ else dwenable=1;
 	result = RegOpenKey(HKEY_CURRENT_USER,"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",&hKey);
 	if(result == ERROR_SUCCESS)
 	{
-	   if (RegSetValueEx(hKey,"ProxyEnable",0,REG_DWORD,(LPBYTE)&dwenable,sizeof(dwenable)) !=ERROR_SUCCESS);
+	   if (RegSetValueEx(hKey,"ProxyEnable",0,REG_DWORD,(LPBYTE)&dwenable,sizeof(dwenable)) !=ERROR_SUCCESS)
 	   {
 	       RegCloseKey(hKey);
 	       return 1;
