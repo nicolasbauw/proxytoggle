@@ -34,14 +34,10 @@ int main(int, char**)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL2_Init();
 
-    ImGuiWindowFlags window_flags = 0;
-
     // Setup interface
-    ImVec4 clear_color = ImColor(0.0f, 0.0f, 0.0f);
     bool show_main_window = true;
     bool proxy_on = false;
     int proxy = 0;
-    int i=4;    //used to push and pop UI styles
 
     // Main loop
     while (!glfwWindowShouldClose(window))
