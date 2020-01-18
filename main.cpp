@@ -9,7 +9,7 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 int ProxyQuery();
-int ProxyOff(bool proxy_on);
+int ProxyOff(bool proxy_status);
 static int display_w, display_h;
 
 static void error_callback(int error, const char* description)
@@ -35,7 +35,7 @@ int main(int, char**)
 
     // Setup interface
     bool show_main_window = true;
-    bool proxy_on = false;
+    bool proxy_status = false;
     int proxy = 0;
 
     // Main loop
@@ -51,7 +51,7 @@ int main(int, char**)
         ImGui::SetNextWindowSize(ImVec2(260,40));
         ImGui::Begin("Proxy toggle", &show_main_window,ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings);
         ImGui::Text("  ");ImGui::SameLine();
-        ImGui::Checkbox("Proxy is", &proxy_on);ImGui::SameLine();
+        ImGui::Checkbox("Proxy is", &proxy_status);ImGui::SameLine();
         if (proxy) ImGui::Text("ON ");
         else ImGui::Text("OFF");
         ImGui::SameLine();ImGui::Text("   ");ImGui::SameLine();
@@ -60,7 +60,7 @@ int main(int, char**)
         // query actual proxy status
         proxy = ProxyQuery();
         // sets proxy on or off according to the UI button
-        ProxyOff(proxy_on);
+        ProxyOff(proxy_status);
         ImGui::End();
 
         // Window rendering
@@ -105,11 +105,11 @@ unsigned long type=REG_DWORD, size=32;
 }
 
 // setting proxy state according to user setting
-int ProxyOff (bool proxy_on) {
+int ProxyOff (bool proxy_status) {
 HKEY hKey;
 LONG result;
 DWORD dwenable;
-if (!proxy_on) dwenable=0;
+if (!proxy_status) dwenable=0;
 else dwenable=1;
 	result = RegOpenKey(HKEY_CURRENT_USER,"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",&hKey);
 	if(result == ERROR_SUCCESS)
